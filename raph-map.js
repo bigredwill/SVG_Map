@@ -10,8 +10,9 @@ window.onload = function () {
 		var i = 0;
 		for(var d in toRemove)
 		{
-			console.log(i++ + "removing " + d);	
-			paper.d.remove();
+			console.log(i + "removing " + d.toString());	
+			i = i+1;
+			paper.remove(d);
 		}
 	};
 
@@ -20,32 +21,33 @@ window.onload = function () {
 		paper.text(500,100,"Counties Served:").attr;
 		var y = 130;
 		removeElements();
-		for(var t in mapData)
+		for(var id in mapData)
 		{
-			// console.log(mapData[t].name + " " + mapData[t].num + " " + hid);
 			var text;
-			if(mapData[t].num === hid) {
+			if(mapData[id].num === hid) {
 				console.log("yes");
-				text = paper.text(520, y, mapData[t].name);
+				text = paper.text(520, y, mapData[id].name);
 				drawBigName(hid);
 			} else {
 				console.log("no");
-				text = paper.text(500, y, mapData[t].name);
+				text = paper.text(500, y, mapData[id].name);
 			}
 			y+= 10;
-			toRemove.push(text);
+			toRemove.push(text.id);
 		}
 	};
 
 	drawBigName = function(hid) {
 		for(var id in mapData)
 		{
+			console.log(id+","+hid)
+			var text;
 			if(mapData[id].num === hid)
 			{
-				paper.text(100,300,mapData[id].name);
+				text = paper.text(100,300,mapData[id].name);
 			}
 			else {
-				paper.text(100,300,"Bay Area");
+				text = paper.text(100,300,"Bay Area");
 			}
 		}
 	};
@@ -73,12 +75,16 @@ window.onload = function () {
 		
 	}, click = function () {
 		id = this.id;
+		removeElements();
+		drawBigName(id);
 	};
+
 	paper.setStart();
-	for(var p in mapData)
-	{
-		console.log(paper.path(mapData[p].shape).attr({stroke: "#ccc6ae", fill: "#f0efeb", "stroke-width": 2,"stroke-opacity": 0.25}).id);
-	}
+	// for(var p in mapData)
+	// {
+	// 	console.log(paper.path(mapData[p].shape).attr({stroke: "#ccc6ae", fill: "#f0efeb", "stroke-width": 2,"stroke-opacity": 0.25}).id);
+	// }
+	paper.add(mapData);
 	var world = paper.setFinish();
 	world.hover(over,out);
 	world.click(click);
